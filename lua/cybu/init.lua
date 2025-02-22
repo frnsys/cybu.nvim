@@ -27,6 +27,14 @@ cybu.setup = function(user_config)
       callback = cybu.autocmd,
     })
   end
+
+  local group = vim.api.nvim_create_augroup("CybuLastModified", { clear = true })
+  vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+    group = group,
+    callback = function()
+      vim.b.last_modified = os.time()
+    end,
+  })
 end
 
 cybu.get_bufs = function()
@@ -46,6 +54,13 @@ cybu.get_bufs = function()
   if _state.mode == "last_used" then
     table.sort(bids, function(a, b)
       return vim.fn.getbufinfo(a)[1].lastused > vim.fn.getbufinfo(b)[1].lastused
+    end)
+
+  elseif _state.mode == "last_changed" then
+    table.sort(bids, function(a, b)
+      local a = vim.fn.getbufinfo(a)[1].variables.last_modified
+      local b = vim.fn.getbufinfo(b)[1].variables.last_modified
+      return (a or -1) > (b or -1)
     end)
   end
 

@@ -25,6 +25,14 @@ vim.api.nvim_create_user_command("CybuLastusedNext", function()
   require("cybu").cycle("next", "last_used")
 end, { nargs = 0 })
 
+vim.api.nvim_create_user_command("CybuLastchangedPrev", function()
+  require("cybu").cycle("prev", "last_changed")
+end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("CybuLastchangedNext", function()
+  require("cybu").cycle("next", "last_changed")
+end, { nargs = 0 })
+
 vim.api.nvim_create_user_command("Cybu", function(args)
   require("cybu").cycle(args.fargs[1])
 end, {
@@ -47,6 +55,18 @@ vim.keymap.set(
   "n",
   "<plug>(CybuLastusedNext)",
   ":lua require('cybu').cycle('next', 'last_used')<cr>",
+  { silent = true, noremap = true }
+)
+vim.keymap.set(
+  "n",
+  "<plug>(CybuLastchangedPrev)",
+  ":lua require('cybu').cycle('prev', 'last_changed')<cr>",
+  { silent = true, noremap = true }
+)
+vim.keymap.set(
+  "n",
+  "<plug>(CybuLastchangedNext)",
+  ":lua require('cybu').cycle('next', 'last_changed')<cr>",
   { silent = true, noremap = true }
 )
 
